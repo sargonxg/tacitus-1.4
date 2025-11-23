@@ -736,3 +736,14 @@ header,
 .page-version {
     color: #ffffff !important;
 }
+
+/* Increase vertical space below the top navigation */
+.hero {
+    padding-top: 80px;  /* adjust to 60 / 80 / 100px depending on how much you want */
+}
+
+/* Make the version badge white */
+.hero .badge {
+    color: #ffffff !important;
+}
+
