@@ -1249,4 +1249,12 @@ footer {
     color: var(--text-muted);
 }
 
+/* MOBILE FIX – Make .grid-4 display 2 cards per row */
+@media (max-width: 768px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.2rem !important;
+    }
+}
+
 
