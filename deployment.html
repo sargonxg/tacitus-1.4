@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tacitus Deployment options for organizations, from secure cloud to hybrid setups, integrating with email and knowledge systems.">
+    <title>Tacitus | Deployment</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="neural-canvas"></canvas>
+
+    <nav class="glass-panel">
+    <div class="logo">TACITUS<span class="logo-mark">◳</span><span class="highlight">_</span></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platform.html" class="nav-pill nav-conflict">Conflict Intelligence Engine</a>
+        <a href="polarization.html" class="nav-pill nav-prism">The Prism Lab</a>
+        <a href="https://concordiadiscors.org" target="_blank" rel="noopener" class="nav-pill nav-magazine">Concordia Discors Magazine</a>
+        <a href="conflict-graph.html" class="nav-pill nav-ontology">Ontology Graph</a>
+        <a href="analysis.html">Deep Analysis</a>
+        <a href="research.html">Research</a>
+        <a href="team.html">Team</a>
+        <a href="tacitus_protocol_ascii.pdf" class="btn-whitepaper" target="_blank" rel="noopener">White Paper</a>
+        <a href="mailto:hello@tacitus.me" class="btn-glow">Connect with Tacitus</a>
+    </div>
+</nav>
+
+    <main>
+        <section class="content-section">
+            <div class="content-wrapper">
+                <div class="section-label">DEPLOYMENT SCENARIOS</div>
+                <div class="glass-card wide">
+                    <h1 class="section-heading">&gt;&gt; How Tacitus Ships</h1>
+                    <p>
+                        Tacitus is designed to meet organizations where they already work: in email, secure clouds, and on‑premise data centers.
+                        Below are representative deployment modes; in practice, we tailor each installation to the security
+                        posture and regulatory environment of the client.
+                    </p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card-cyber">
+                        <h4>1. Email‑Native Cloud</h4>
+                        <p>
+                            Google Workspace / Microsoft 365 integration with OAuth‑scoped access. Data is processed in a
+                            dedicated tenant; nothing is used for model training.
+                        </p>
+                        <ul class="terminal-list">
+                            <li>&gt; Fastest time to value</li>
+                            <li>&gt; Ideal for pilot and mid‑size orgs</li>
+                            <li>&gt; SOC‑2 ready infrastructure</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-cyber">
+                        <h4>2. Private VPC / GovCloud</h4>
+                        <p>
+                            Tacitus runs inside your virtual private cloud, next to your existing data lake and identity provider.
+                            LLM calls are routed to region‑locked providers or to your own models.
+                        </p>
+                        <ul class="terminal-list">
+                            <li>&gt; For regulated sectors</li>
+                            <li>&gt; Full auditability of prompts/events</li>
+                            <li>&gt; Supports local and open‑weight models</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-cyber">
+                        <h4>3. On‑Premise / Air‑Gapped</h4>
+                        <p>
+                            For the most sensitive contexts (peace processes, internal investigations), Tacitus can be
+                            deployed on metal in an air‑gapped environment with no external network calls.
+                        </p>
+                        <ul class="terminal-list">
+                            <li>&gt; No telemetry leaves the site</li>
+                            <li>&gt; Hardware cryptography optional</li>
+                            <li>&gt; Human review remains in the loop</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

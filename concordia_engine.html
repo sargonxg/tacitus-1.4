@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Concordia Engine is a Tacitus system architecture demo linking multi-agent OSINT, RAG, and conflict ontology pipelines.">
+    <title>Tacitus | Concordia Engine</title>
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- VISUALIZATION LIBRARY: Cytoscape.js (Best for Mixed Shapes/Ontologies) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-amber: #ffae00;
+            --neon-red: #ff2a2a;
+            --neon-green: #0aff0a;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* NAVIGATION */
+        .glass-panel {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(10, 10, 12, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            letter-spacing: -1px;
+            font-size: 1.2rem;
+        }
+
+        .logo-mark { color: var(--neon-cyan); margin: 0 5px; }
+        .highlight { color: var(--neon-amber); animation: blink 1s infinite; }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active-highlight { color: var(--text-main); }
+        .btn-glow {
+            border: 1px solid var(--neon-cyan);
+            padding: 0.5rem 1rem;
+            color: var(--neon-cyan) !important;
+            border-radius: 4px;
+        }
+        .btn-glow:hover { background: rgba(0, 243, 255, 0.1); }
+
+        /* LAYOUT */
+        main { padding-top: 80px; max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
+        
+        .hero {
+            padding: 4rem 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 4rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border: 1px solid var(--neon-purple);
+            color: var(--neon-purple);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 3.5rem; margin: 0; line-height: 1; letter-spacing: -2px; }
+        h2 { font-size: 2rem; margin-bottom: 1rem; }
+        h3 { font-family: 'JetBrains Mono', monospace; color: var(--neon-cyan); font-size: 1rem; margin-bottom: 1rem; }
+        
+        .subtitle { max-width: 600px; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.6; }
+        .accent { color: var(--text-main); font-weight: 600; }
+
+        .content-section { padding: 2rem; margin-bottom: 4rem; position: relative; }
+        .section-label {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            background: var(--bg-dark);
+            padding: 0 10px;
+            font-size: 0.8rem;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .wide { width: 100%; }
+
+        /* GRIDS */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+
+        .stat-block { padding-left: 1.5rem; }
+        .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); }
+        .hud-title { margin: 0.5rem 0 1rem 0; font-size: 1.2rem; }
+
+        .terminal-list { list-style: none; padding: 0; margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted); }
+        .terminal-list li { margin-bottom: 0.5rem; }
+
+        .card-cyber {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+        .code-text { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+
+        /* GRAPH CONTAINER SPECIFICS */
+        .graph-container {
+            width: 100%;
+            height: 600px;
+            background: #050505;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-selector { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .btn-ghost:hover, .btn-ghost.active {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.05);
+        }
+
+        /* OVERLAY FOR GRAPH */
+        #graph-ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .graph-hud-panel {
+            background: rgba(0, 0, 0, 0.85);
+            border-left: 3px solid var(--neon-amber);
+            padding: 15px;
+            width: 280px;
+            pointer-events: auto;
+            margin-bottom: 10px;
+        }
+        .graph-hud-title { font-family:'JetBrains Mono'; font-size: 12px; color: var(--neon-amber); margin-bottom: 5px; }
+        .graph-hud-text { font-size: 12px; line-height: 1.4; color: #ccc; }
+        .graph-btn { 
+            background: #eee; color: #000; border: none; 
+            padding: 6px 12px; font-size: 11px; font-weight: bold; 
+            cursor: pointer; margin-top: 8px; width: 100%;
+        }
+        .graph-btn:hover { background: var(--neon-cyan); }
+
+        #tour-overlay { display: none; border-left-color: var(--neon-purple); }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+    </style>
+</head>
+
+<body>
+
+    <nav class="glass-panel">
+    <div class="logo">TACITUS<span class="logo-mark">◳</span><span class="highlight">_</span></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platform.html" class="nav-pill nav-conflict">Conflict Intelligence Engine</a>
+        <a href="polarization.html" class="nav-pill nav-prism">The Prism Lab</a>
+        <a href="https://concordiadiscors.org" target="_blank" rel="noopener" class="nav-pill nav-magazine">Concordia Discors Magazine</a>
+        <a href="conflict-graph.html" class="nav-pill nav-ontology">Ontology Graph</a>
+        <a href="analysis.html">Deep Analysis</a>
+        <a href="research.html">Research</a>
+        <a href="team.html">Team</a>
+        <a href="tacitus_protocol_ascii.pdf" class="btn-whitepaper" target="_blank" rel="noopener">White Paper</a>
+        <a href="mailto:hello@tacitus.me" class="btn-glow">Connect with Tacitus</a>
+    </div>
+</nav>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="badge">SYSTEM ARCHITECTURE // V2.1</div>
+            <h1 class="glitch-text">CONCORDIA ENGINE</h1>
+            <p class="subtitle">
+                A multi-pipeline, multi-agent <span class="accent">Conflict Intelligence Engine</span> architecture demo.
+                This view shows how Tacitus fuses OSINT scraping, deep-document RAG, and a full conflict ontology into
+                a system that can be adapted to different clients, data regimes, and deployment constraints.
+            </p>
+        </section>
+
+        <!-- TOPOLOGY -->
+        <section class="content-section">
+            <div class="section-label">01. SYSTEM TOPOLOGY</div>
+            <div class="glass-card wide">
+                <h3>>> The Intelligence Pipeline</h3>
+                <div class="grid-3" style="margin-top: 2rem;">
+                    <div class="stat-block" style="border-left: 2px solid var(--neon-cyan);">
+                        <span class="stat-label">INPUT LAYER</span>
+                        <h4 class="hud-title">DATA INFRASTRUCTURE</h4>
+                        <ul class="terminal-list">
+                            <li>> Tavily / Serper / GDELT</li>
+                            <li>> Firecrawl Local Media</li>
+                            <li>> RAG (UN, ICG, SG Reports)</li>
+                            <li>> Vector Search</li>
+                        </ul>
+                    </div>
+                    <div class="stat-block" style="border-left: 2px solid var(--neon-purple);">
+                        <span class="stat-label">COMPUTE LAYER</span>
+                        <h4 class="hud-title">AGENTIC SWARM</h4>
+                        <ul class="terminal-list">
+                            <li>> Fact-Discovery Agents</li>
+                            <li>> Contradiction Filters</li>
+                            <li>> Ontology Engine</li>
+                            <li>> Strategy Agents</li>
+                        </ul>
+                    </div>
+                    <div class="stat-block" style="border-left: 2px solid var(--neon-amber);">
+                        <span class="stat-label">OUTPUT LAYER</span>
+                        <h4 class="hud-title">STRATEGIC ARTIFACTS</h4>
+                        <ul class="terminal-list">
+                            <li>> Situation Reports</li>
+                            <li>> Stakeholder Maps</li>
+                            <li>> Conflict Graphs</li>
+                            <li>> ZOPA Detection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONFLICT VISUALIZER -->
+        <section class="content-section">
+            <div class="section-label">04. CONFLICT VISUALIZER</div>
+
+            <div class="glass-card wide">
+                <h2>>> Visualizing Conflicts Across Scales</h2>
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">
+                    The Concordia Engine converts messy text into a dynamic <strong>Actor → Interest → Constraint</strong> graph. 
+                    Select a case file below to load the ontology.
+                </p>
+
+                <!-- CASE SELECTOR -->
+                <div class="topic-selector">
+                    <button class="btn-ghost active" onclick="loadCase('niagara')">CASE 01: Niagara Power War (1893)</button>
+                    <button class="btn-ghost" onclick="loadCase('openai')">CASE 02: Boardroom Coup (2023)</button>
+                    <button class="btn-ghost" onclick="loadCase('geo')">CASE 03: Geopolitics (Saud-Iran)</button>
+                </div>
+
+                <!-- GRAPH PANEL -->
+                <div id="conflict-graph-container" class="graph-container">
+                    <!-- HUD OVERLAY INSIDE GRAPH -->
+                    <div id="graph-ui">
+                        <div class="graph-hud-panel">
+                            <div class="graph-hud-title">TACITUS // LIVE GRAPH</div>
+                            <div class="graph-hud-text">
+                                <strong>Signal vs Noise Analysis</strong><br>
+                                Nodes: <span id="node-count">0</span> | Edges: <span id="edge-count">0</span><br>
+                                <em>Scroll to Zoom. Click Node to Isolate.</em>
+                            </div>
+                            <button class="graph-btn" id="play-strategy">▶ RUN STRATEGY TOUR</button>
+                            <button class="graph-btn" id="reset-camera" style="background: #333; color: #fff;">⟲ RESET VIEW</button>
+                        </div>
+
+                        <div class="graph-hud-panel" id="tour-overlay">
+                            <div class="graph-hud-title" id="tour-title">STEP 1</div>
+                            <div class="graph-hud-text" id="tour-desc">Description...</div>
+                        </div>
+                    </div>
+                    <!-- CYTOSCAPE CONTAINER -->
+                    <div id="cy" style="width:100%; height:100%;"></div>
+                </div>
+
+                <!-- METADATA -->
+                <div class="glass-card" style="margin-top: 2rem; border: 1px dashed var(--border); background: rgba(0,0,0,0.2);">
+                    <h3>>> Intelligence Feed</h3>
+                    <p id="node-details" class="code-text">
+                        [SYSTEM READY] Waiting for node selection...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEPLOY -->
+        <section class="content-section" style="text-align: center;">
+            <h2 class="section-heading">>> Deploy the Engine</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 1rem auto 2rem;">
+                The Concordia Engine is available for institutional pilots.
+            </p>
+            <a href="mailto:deploy@tacitus.me" class="btn-glow">Request Access</a>
+        </section>
+
+    </main>
+
+    <!-- GRAPH SCRIPT -->
+    <script>
+        let cy; // Global Cytoscape Instance
+
+        // --- 1. DATA GENERATION ---
+
+        function generateNiagaraData() {
+            let elements = [];
+
+            // --- A. CORE ONTOLOGY (The Signal) ---
+            // Scale coords: x * 50, y * 50 to spread them out in Cytoscape
+            
+            // ACTORS (Circles)
+            elements.push({ data: { id: 'edison', label: 'Thomas Edison (DC)', type: 'ACTOR', color: '#ff2a2a' }, position: { x: 0, y: 0 } });
+            elements.push({ data: { id: 'westinghouse', label: 'George Westinghouse (AC)', type: 'ACTOR', color: '#0aff0a' }, position: { x: 600, y: 150 } });
+            elements.push({ data: { id: 'tesla', label: 'Nikola Tesla', type: 'ACTOR', color: '#0aff0a' }, position: { x: 650, y: 250 } });
+            elements.push({ data: { id: 'kelvin', label: 'Lord Kelvin', type: 'ACTOR', color: '#ffae00' }, position: { x: 300, y: 400 } });
+            
+            // SHADOW (Octagon)
+            elements.push({ data: { id: 'morgan', label: 'J.P. Morgan', type: 'SHADOW', color: '#ffffff' }, position: { x: 150, y: -300 } });
+            
+            // PROXY (Triangle)
+            elements.push({ data: { id: 'brown', label: 'Harold P. Brown', type: 'PROXY', color: '#ff2a2a' }, position: { x: -150, y: 150 } });
+
+            // CONSTRAINTS (Rectangles)
+            elements.push({ data: { id: 'c_copper', label: 'Copper Cost', type: 'CONSTRAINT', color: '#666' }, position: { x: 300, y: 0 } });
+            elements.push({ data: { id: 'c_physics', label: '20mi Transmission', type: 'CONSTRAINT', color: '#666' }, position: { x: 350, y: 300 } });
+
+            // ZOPA (Diamond)
+            elements.push({ data: { id: 'zopa', label: 'ZOPA: Patent Pool', type: 'ZOPA', color: '#bcbd22' }, position: { x: 300, y: -150 } });
+
+            // EDGES
+            elements.push({ data: { source: 'edison', target: 'brown', type: 'collusion' } });
+            elements.push({ data: { source: 'morgan', target: 'edison', type: 'control' } });
+            elements.push({ data: { source: 'edison', target: 'c_copper', type: 'blocked' } });
+            elements.push({ data: { source: 'westinghouse', target: 'c_physics', type: 'solves' } });
+            elements.push({ data: { source: 'kelvin', target: 'c_physics', type: 'mandate' } });
+            elements.push({ data: { source: 'morgan', target: 'zopa', type: 'pivot' } });
+            elements.push({ data: { source: 'westinghouse', target: 'zopa', type: 'agreement' } });
+
+            // --- B. NOISE (Evidence Dots) ---
+            // Generate 300 small dots around actors
+            const actors = ['edison', 'westinghouse', 'morgan', 'kelvin'];
+            actors.forEach(actorId => {
+                const noiseCount = (actorId === 'edison') ? 200 : 80;
+                // Find actor pos
+                const actorNode = elements.find(e => e.data.id === actorId);
+                const ax = actorNode.position.x;
+                const ay = actorNode.position.y;
+
+                for(let i=0; i<noiseCount; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = 80 + Math.random() * 150;
+                    const nx = ax + Math.cos(angle) * radius;
+                    const ny = ay + Math.sin(angle) * radius;
+                    
+                    elements.push({
+                        data: { id: `ev_${actorId}_${i}`, type: 'EVIDENCE' },
+                        position: { x: nx, y: ny }
+                    });
+                    elements.push({
+                        data: { source: actorId, target: `ev_${actorId}_${i}`, type: 'noise' }
+                    });
+                }
+            });
+
+            return elements;
+        }
+
+        function generateOpenAIData() {
+            // Simple dummy dataset
+            return [
+                { data: { id: 'altman', label: 'Sam Altman', type: 'ACTOR', color: '#00f3ff' }, position: { x: 0, y: 0 } },
+                { data: { id: 'board', label: 'The Board', type: 'ACTOR', color: '#bc13fe' }, position: { x: 300, y: 0 } },
+                { data: { id: 'satya', label: 'Satya Nadella', type: 'SHADOW', color: '#0055ff' }, position: { x: 150, y: -200 } },
+                { data: { id: 'staff', label: '700 Employees', type: 'ZOPA', color: '#0aff0a' }, position: { x: 150, y: 200 } },
+                { data: { source: 'board', target: 'altman' } },
+                { data: { source: 'satya', target: 'altman' } },
+                { data: { source: 'staff', target: 'board' } }
+            ];
+        }
+
+        // --- 2. INITIALIZATION ---
+
+        function loadCase(caseId) {
+            const data = (caseId === 'niagara') ? generateNiagaraData() : 
+                         (caseId === 'openai') ? generateOpenAIData() : generateNiagaraData();
+
+            // Count stats
+            const nodes = data.filter(e => !e.data.source).length;
+            const edges = data.filter(e => e.data.source).length;
+            document.getElementById('node-count').innerText = nodes;
+            document.getElementById('edge-count').innerText = edges;
+
+            // Init Cytoscape
+            cy = cytoscape({
+                container: document.getElementById('cy'),
+                elements: data,
+                style: [
+                    // --- CORE ONTOLOGY STYLES ---
+                    {
+                        selector: 'node[type="ACTOR"]',
+                        style: {
+                            'shape': 'ellipse',
+                            'width': 60, 'height': 60,
+                            'background-color': 'data(color)',
+                            'label': 'data(label)',
+                            'color': '#fff', 'font-size': 12, 'text-valign': 'center', 'text-halign': 'right',
+                            'text-background-opacity': 0.7, 'text-background-color': '#000', 'text-background-padding': 3
+                        }
+                    },
+                    {
+                        selector: 'node[type="CONSTRAINT"]',
+                        style: {
+                            'shape': 'round-rectangle',
+                            'width': 80, 'height': 50,
+                            'background-color': '#333',
+                            'border-width': 2, 'border-color': '#777',
+                            'label': 'data(label)',
+                            'color': '#ccc', 'font-size': 10, 'text-valign': 'center', 'text-wrap': 'wrap'
+                        }
+                    },
+                    {
+                        selector: 'node[type="SHADOW"]',
+                        style: {
+                            'shape': 'octagon',
+                            'width': 70, 'height': 70,
+                            'background-color': '#000',
+                            'border-width': 3, 'border-color': '#fff',
+                            'label': 'data(label)',
+                            'color': '#fff', 'font-size': 12
+                        }
+                    },
+                    {
+                        selector: 'node[type="ZOPA"]',
+                        style: {
+                            'shape': 'diamond',
+                            'width': 60, 'height': 60,
+                            'background-color': 'rgba(188, 189, 34, 0.2)',
+                            'border-width': 2, 'border-color': '#bcbd22', 'border-style': 'dashed',
+                            'label': 'data(label)',
+                            'color': '#bcbd22', 'font-size': 10
+                        }
+                    },
+                    {
+                        selector: 'node[type="PROXY"]',
+                        style: {
+                            'shape': 'triangle',
+                            'width': 40, 'height': 40,
+                            'background-color': 'data(color)',
+                            'label': 'data(label)', 'color': '#fff', 'font-size': 10
+                        }
+                    },
+                    // --- NOISE ---
+                    {
+                        selector: 'node[type="EVIDENCE"]',
+                        style: {
+                            'shape': 'ellipse',
+                            'width': 6, 'height': 6,
+                            'background-color': '#444',
+                            'label': ''
+                        }
+                    },
+                    // --- EDGES ---
+                    {
+                        selector: 'edge',
+                        style: {
+                            'width': 1,
+                            'line-color': '#333',
+                            'curve-style': 'bezier'
+                        }
+                    },
+                    {
+                        selector: 'edge[type="control"]',
+                        style: { 'width': 4, 'line-color': '#fff' }
+                    },
+                    {
+                        selector: 'edge[type="blocked"]',
+                        style: { 'width': 3, 'line-color': '#ff2a2a', 'line-style': 'dashed' }
+                    },
+                    {
+                        selector: 'edge[type="pivot"]',
+                        style: { 'width': 3, 'line-color': '#bcbd22', 'line-style': 'dotted' }
+                    },
+                    // --- INTERACTION STATES ---
+                    {
+                        selector: '.dimmed',
+                        style: {
+                            'opacity': 0.1
+                        }
+                    },
+                    {
+                        selector: '.highlighted',
+                        style: {
+                            'opacity': 1,
+                            'z-index': 9999
+                        }
+                    }
+                ],
+                layout: {
+                    name: 'preset' // We calculated positions manually for the demo
+                },
+                textureOnViewport: true, // Performance opt
+                pixelRatio: 1 // Performance opt
+            });
+
+            // Interaction: Tap Node (Ego Network)
+            cy.on('tap', 'node', function(evt){
+                const node = evt.target;
+                
+                // Update HUD
+                const d = node.data();
+                document.getElementById('node-details').innerHTML = 
+                    `> <strong>SELECTED:</strong> ${d.label || 'Evidence Node'}<br>` +
+                    `> <strong>TYPE:</strong> ${d.type}<br>` +
+                    `> <strong>CONN:</strong> ${node.degree()} edges.`;
+
+                // Visual Filter
+                cy.elements().addClass('dimmed').removeClass('highlighted');
+                node.addClass('highlighted').removeClass('dimmed');
+                node.neighborhood().addClass('highlighted').removeClass('dimmed');
+            });
+
+            // Tap BG to Reset
+            cy.on('tap', function(evt){
+                if(evt.target === cy){
+                    cy.elements().removeClass('dimmed highlighted');
+                    document.getElementById('node-details').innerHTML = "[SYSTEM READY] Waiting for node selection...";
+                }
+            });
+            
+            // Initial fit
+            cy.fit(data.filter(n => n.data.type !== 'EVIDENCE'), 50);
+        }
+
+        // --- 3. TOUR LOGIC ---
+        const tourSteps = [
+            { pos: { x: 0, y: 0 }, zoom: 1.2, title: "THE INCUMBENT", desc: "Edison (Red Circle) is the loudest actor. Note the massive cloud of 'Noise' nodes (grey dots) surrounding him." },
+            { pos: { x: 300, y: 0 }, zoom: 1.5, title: "THE HARD CONSTRAINT", desc: "The Copper Cost (Grey Rectangle). Edison connects to this with a RED dashed line (Blocked)." },
+            { pos: { x: 150, y: -300 }, zoom: 1.5, title: "THE SHADOW VETO", desc: "J.P. Morgan (Black Octagon). He holds the capital. He sees Edison is blocked by physics/cost." },
+            { pos: { x: 300, y: -150 }, zoom: 1.5, title: "ZOPA DETECTED", desc: "Morgan pivots to the Patent Pool (Yellow Diamond). This allows a merge with Westinghouse (Green)." }
+        ];
+
+        document.getElementById('play-strategy').onclick = async () => {
+            const overlay = document.getElementById('tour-overlay');
+            const tTitle = document.getElementById('tour-title');
+            const tDesc = document.getElementById('tour-desc');
+
+            overlay.style.display = 'block';
+
+            for (const step of tourSteps) {
+                tTitle.innerText = step.title;
+                tDesc.innerText = step.desc;
+
+                cy.animate({
+                    position: step.pos,
+                    zoom: step.zoom,
+                    duration: 1500,
+                    easing: 'ease-in-out-cubic'
+                });
+
+                await new Promise(r => setTimeout(r, 4000));
+            }
+
+            overlay.style.display = 'none';
+            cy.animate({ fit: { padding: 50 } }, { duration: 1000 });
+        };
+
+        document.getElementById('reset-camera').onclick = () => {
+            cy.elements().removeClass('dimmed highlighted');
+            cy.animate({ fit: { padding: 50 } }, { duration: 800 });
+        };
+
+        // Load default
+        loadCase('niagara');
+
+    </script>
+</body>
+</html>

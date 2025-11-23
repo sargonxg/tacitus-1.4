@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Prism Lab is Tacitus' polarization and campaigns module for argument reframing, audience mapping, and consensus language discovery across contentious issues.">
+    <title>Tacitus | The Prism Lab</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="neural-canvas"></canvas>
+
+    <nav class="glass-panel">
+    <div class="logo">TACITUS<span class="logo-mark">◳</span><span class="highlight">_</span></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platform.html" class="nav-pill nav-conflict">Conflict Intelligence Engine</a>
+        <a href="polarization.html" class="nav-pill nav-prism">The Prism Lab</a>
+        <a href="https://concordiadiscors.org" target="_blank" rel="noopener" class="nav-pill nav-magazine">Concordia Discors Magazine</a>
+        <a href="conflict-graph.html" class="nav-pill nav-ontology">Ontology Graph</a>
+        <a href="analysis.html">Deep Analysis</a>
+        <a href="research.html">Research</a>
+        <a href="team.html">Team</a>
+        <a href="tacitus_protocol_ascii.pdf" class="btn-whitepaper" target="_blank" rel="noopener">White Paper</a>
+        <a href="mailto:hello@tacitus.me" class="btn-glow">Connect with Tacitus</a>
+    </div>
+</nav>
+
+    <main>
+        <section class="hero analysis-hero">
+            <div class="content-wrapper">
+                <div class="badge">LAB MODULE // BETA</div>
+                <h1 class="glitch-text" data-text="THE PRISM">THE PRISM</h1>
+                <p class="subtitle">
+                    A polarization lab for <span class="accent">argument reframing</span>, audience mapping, and campaign stress-testing.
+                    It lets you test how a stance on AI regulation, urban density, free speech, and more lands across
+                    moral foundations and segments – surfacing bridges and consensus language instead of just sharper clashes.
+                </p>
+                <div class="app-cta-row">
+                    <a href="#" class="btn-app-primary">Launch Prism App</a>
+                    <a href="#" class="btn-app-secondary">Open Conflict Ontology Graph</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-label">01. ARGUMENT REFRAMING ENGINE</div>
+            <div class="glass-card wide">
+                <div class="grid-2">
+                    <div class="prism-input-col">
+                        <h4 class="hud-title">>> STEP 1: DEFINE STANCE</h4>
+                        <p class="code-text" style="margin-bottom:1rem;">
+                            Select a domain and paste the way you <em>actually</em> argue it. The Prism will infer which
+                            moral foundations you signal – and which your counterpart is really listening for.
+                        </p>
+
+                        <div class="topic-selector">
+                            <button class="btn-ghost small topic-btn active" data-topic="ai">AI Regulation</button>
+                            <button class="btn-ghost small topic-btn" data-topic="urban">Urban Density</button>
+                            <button class="btn-ghost small topic-btn" data-topic="speech">Free Speech</button>
+                            <button class="btn-ghost small topic-btn" data-topic="climate">Climate Policy</button>
+                            <button class="btn-ghost small topic-btn" data-topic="migration">Migration & Borders</button>
+                            <button class="btn-ghost small topic-btn" data-topic="policing">Policing & Public Safety</button>
+                        </div>
+
+                        <div class="slider-group" style="margin-top: 1.6rem;">
+                            <label class="stat-label">YOUR INTENSITY</label>
+                            <input id="prism-intensity" type="range" min="1" max="100" value="70" class="cyber-slider">
+                            <div class="slider-labels">
+                                <span>Moderate</span>
+                                <span>Radical</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:1.5rem;">
+                            <label class="stat-label" for="prism-argument">YOUR ARGUMENT TEXT</label>
+                            <textarea id="prism-argument" rows="5" class="code-text" placeholder="Paste or write your current argument here…"></textarea>
+                            <p class="stat-desc" style="margin-top:4px;">
+                                Tip: write it the way you would in a memo, tweet thread, or op-ed – not how you think you
+                                <em>should</em> sound.
+                            </p>
+                        </div>
+
+                        <div class="terminal-log" style="margin-top: 1.5rem;">
+                            <p>> detected_topic: "<span id="detected-topic">AI Regulation</span>"</p>
+                            <p>> current_frame: <span id="current-frame" style="color:var(--neon-cyan)">"Innovation vs Risk"</span></p>
+                            <p>> <strong>OPPONENT_FRAME:</strong> "<span id="opponent-frame">Existential Security</span>"</p>
+                        </div>
+                    </div>
+
+                    <div class="prism-vis-col">
+                        <h4 class="hud-title">>> STEP 2: LATENT VALUE MAP</h4>
+
+                        <div class="radar-chart-container">
+                            <div class="radar-axis axis-1"></div>
+                            <div class="radar-axis axis-2"></div>
+                            <div class="radar-shape"></div>
+
+                            <span class="radar-label top">LIBERTY</span>
+                            <span class="radar-label right">LOYALTY</span>
+                            <span class="radar-label bottom">AUTHORITY</span>
+                            <span class="radar-label left">CARE</span>
+
+                            <canvas id="prism-radar"></canvas>
+                        </div>
+
+                        <p id="value-summary" class="stat-desc" style="text-align:center; margin-top:10px;">
+                            Your argument relies heavily on <strong>Liberty</strong> values. Your counterpart may be
+                            filtering first for <strong>Authority/Security</strong>. The radar shows this mismatch.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="prism-output" style="margin-top: 3rem; border-top: 1px dashed var(--glass-border); padding-top: 2rem;">
+                    <h4 class="hud-title">>> STEP 3: THE COMMON GROUND GENERATOR</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        The system uses a stripped-down version of <span class="accent">moral reframing</span>:
+                        it keeps your core position but rotates the language toward the values your counterpart actually
+                        tracks. Think of these as drafts for memos, back-channel notes, or talking points – not scripts.
+                    </p>
+
+                    <div class="grid-2">
+                        <div class="card-cyber">
+                            <h4 style="color:#ff5555">❌ Why You Are Losing</h4>
+                            <p class="code-text" id="losing-argument"></p>
+                            <p class="stat-desc" id="losing-reason" style="color:#888; margin-top:5px;"></p>
+                        </div>
+                        <div class="card-cyber" style="border-color: var(--neon-amber);">
+                            <h4 style="color:var(--neon-amber)">✅ Bridge Variants</h4>
+                            <p class="stat-desc" style="margin-bottom:6px;">
+                                Three ways of saying roughly the same thing, aimed at different parts of the moral map.
+                            </p>
+                            <p class="code-text" id="bridge-direct"></p>
+                            <p class="code-text" id="bridge-goal"></p>
+                            <p class="code-text" id="bridge-process"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" style="text-align: center;">
+            <a href="mailto:hello@tacitus.me?subject=Prism%20Lab%20Session" class="btn-accent">Book a Polarization Mapping Session</a>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="prism.js"></script>
+</body>
+</html>
+

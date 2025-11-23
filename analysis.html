@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tacitus Deep Analysis shows how the engine reconstructs conflict topology, interests, constraints, and plausible corridors of agreement from email and document streams.">
+    <title>Tacitus | Deep Conflict Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="neural-canvas"></canvas>
+
+    <nav class="glass-panel">
+    <div class="logo">TACITUS<span class="logo-mark">◳</span><span class="highlight">_</span></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platform.html" class="nav-pill nav-conflict">Conflict Intelligence Engine</a>
+        <a href="polarization.html" class="nav-pill nav-prism">The Prism Lab</a>
+        <a href="https://concordiadiscors.org" target="_blank" rel="noopener" class="nav-pill nav-magazine">Concordia Discors Magazine</a>
+        <a href="conflict-graph.html" class="nav-pill nav-ontology">Ontology Graph</a>
+        <a href="analysis.html">Deep Analysis</a>
+        <a href="research.html">Research</a>
+        <a href="team.html">Team</a>
+        <a href="tacitus_protocol_ascii.pdf" class="btn-whitepaper" target="_blank" rel="noopener">White Paper</a>
+        <a href="mailto:hello@tacitus.me" class="btn-glow">Connect with Tacitus</a>
+    </div>
+</nav>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero analysis-hero">
+            <div class="content-wrapper">
+                <div class="badge">SYSTEM OUTPUT // LOGS</div>
+                <h1 class="glitch-text" data-text="THE LOGIC OF RESOLUTION">THE LOGIC OF RESOLUTION</h1>
+                <p class="subtitle">
+                    Tacitus does not just summarize emails. It reconstructs the <span class="accent">topology of the conflict</span>:
+                    who is involved, what they really want, which constraints bind them, and where common ground can realistically emerge.
+                    The Deep Analysis view is the narrative layer on top of the same ontology and conflict graph used across the Tacitus platform.
+                </p>
+            </div>
+        </section>
+
+        <!-- 01. ONTOLOGY OF CONFLICT -->
+        <section class="content-section">
+            <div class="section-label">01. THE TACITUS ONTOLOGY</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>HOW THE ENGINE “THINKS” ABOUT CONFLICT</h3>
+                    <span class="status-tag ok">ONTOLOGY STABLE</span>
+                </div>
+
+                <p>
+                    Every Tacitus analysis runs on a shared conflict ontology. Instead of treating disputes as
+                    “angry text blobs”, we decompose them into structured elements that show <strong>who</strong> is involved,
+                    <strong>why</strong> they care, <strong>what</strong> binds them, and <strong>where</strong> resolution can realistically emerge.
+                </p>
+
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="stat-block">
+                        <span class="stat-label">Actors</span>
+                        <span class="stat-val cyan">WHO</span>
+                        <p class="stat-desc">
+                            Individuals, teams, boards, ministries, factions.
+                            Nodes in the graph; each with role, power, mandate, and red lines.
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Interests &amp; Needs</span>
+                        <span class="stat-val purple">WHY</span>
+                        <p class="stat-desc">
+                            What they actually care about beneath stated positions:
+                            security, recognition, fairness, continuity, autonomy, identity.
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Constraints</span>
+                        <span class="stat-val amber">WHAT BINDS</span>
+                        <p class="stat-desc">
+                            Law, budgets, coalitions, reputations, time horizons.
+                            Hard limits on what a “solution” can demand without causing collapse elsewhere.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div class="stat-block">
+                        <span class="stat-label">Relationships</span>
+                        <span class="stat-val">EDGES</span>
+                        <p class="stat-desc">
+                            Alliance, dependency, rivalry, mediation, veto power.  
+                            In the UI: <span class="dot-fact"></span> structural ties vs 
+                            <span class="dot-narrative"></span> narrative ties (who listens to whom, who shapes the story).
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Leverage &amp; ZOPA</span>
+                        <span class="stat-val red">RESOLUTION</span>
+                        <p class="stat-desc">
+                            The “Zone of Possible Agreement” emerges where interests overlap and constraints permit.
+                            Tacitus continuously searches for those intersections and tests how stable they are.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="terminal-log wide" style="margin-top: 1.5rem;">
+                    <p>> parse_emails() → extract_actors() → infer_interests() → map_constraints() → build_graph()</p>
+                    <p>> resolution_logic = graph.search_paths(common_ground &amp; mandate &amp; minimal_cost)</p>
+                    <p>> output: conflict_map, leverage_points, recommended_steps</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 01B. TACITUS ONTOLOGY AGENT -->
+        <section class="content-section">
+            <div class="section-label">01B. THE TACITUS ONTOLOGY AGENT</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>THE TACITUS ONTOLOGY AGENT</h3>
+                    <span class="status-tag ok">DETERMINISTIC ENGINE</span>
+                </div>
+
+                <p>
+                    The Tacitus Ontology Agent is the core reasoning module that turns raw, emotionally charged communication
+                    into a <strong>stable, machine-readable conflict model</strong>. Where generic LLMs fluctuate with wording or tone,
+                    the Ontology Agent runs through a <strong>deterministic pipeline</strong> grounded in negotiation theory, human needs research,
+                    and formal argument mapping.
+                </p>
+
+                <p class="stat-desc">
+                    Drawing on work from Fisher &amp; Ury (interests vs. positions), Burton (human needs: security, identity, recognition),
+                    Kelman (interactive problem-solving), Zartman (ripeness and mutually hurting stalemates), and Walton/IBIS-style
+                    argument schemes, Tacitus encodes recurring conflict patterns into a fixed schema. The goal is simple:
+                    <strong>same inputs, same structure, every time</strong>.
+                </p>
+
+                <div class="terminal-log wide">
+                    <p>> deterministic_extract(actors)</p>
+                    <p>> deterministic_extract(interests)</p>
+                    <p>> deterministic_extract(constraints)</p>
+                    <p>> deterministic_extract(relationships)</p>
+                    <p>> deterministic_extract(zopa_signals)</p>
+                    <p>> assert(stability_of_ontology == true)</p>
+                </div>
+
+                <h4 class="hud-title" style="margin-top: 2rem;">>> FOUR-STAGE REASONING PIPELINE</h4>
+
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div>
+                        <h5 class="hud-title">1. IDENTIFICATION</h5>
+                        <p class="stat-desc">
+                            Extracts all <strong>actors, claims, demands, and explicit positions</strong> from emails, memos, minutes, and briefings.
+                            Uses hybrid NER and rule-based normalization to map “the board”, “our investors”, or “legal” into coherent Actor nodes.
+                        </p>
+                    </div>
+                    <div>
+                        <h5 class="hud-title">2. INFERENCE</h5>
+                        <p class="stat-desc">
+                            Infers <strong>latent interests</strong> behind positions:
+                            “I deserve 60%” → authorship and recognition; “I can’t sign this” → reputational or legal risk.
+                            The Agent draws on conflict-psychology patterns: identity, fairness, autonomy, continuity, security.
+                        </p>
+                    </div>
+                    <div>
+                        <h5 class="hud-title">3. STRUCTURING</h5>
+                        <p class="stat-desc">
+                            Builds a <strong>constraint matrix</strong> (law, calendars, budgets, veto thresholds, coalitions) and a
+                            <strong>relationship graph</strong> (alliances, dependencies, rivalries, influence lines, mediation channels).
+                            Distinguishes hard constraints from soft preferences.
+                        </p>
+                    </div>
+                    <div>
+                        <h5 class="hud-title">4. COMPUTATION</h5>
+                        <p class="stat-desc">
+                            Runs graph algorithms: centrality, shortest paths, bottlenecks, coalition fragility, overlap of interests.
+                            Computes <strong>ZOPA candidates</strong>, likely escalation paths, and minimal-cost resolution sequences.
+                            These outputs feed Tacitus’ narrative reports and simulations.
+                        </p>
+                    </div>
+                </div>
+
+                <h4 class="hud-title" style="margin-top: 2rem;">>> OUTPUT ARTIFACTS</h4>
+                <p class="stat-desc">
+                    Every Ontology Agent run produces a consistent set of artifacts:
+                </p>
+
+                <ul class="terminal-list">
+                    <li>> <strong>Actor registry</strong>: roles, power scores, mandates, red lines</li>
+                    <li>> <strong>Interest map</strong>: explicit and inferred motivations, with strength scores</li>
+                    <li>> <strong>Constraint matrix</strong>: hard vs. soft constraints, time and law overlays</li>
+                    <li>> <strong>Relationship graph</strong>: alliances, veto edges, mediation channels, trust lines</li>
+                    <li>> <strong>ZOPA candidates</strong>: overlapping interests plus feasible concessions</li>
+                    <li>> <strong>Escalation projections</strong>: where the conflict is likely to fracture</li>
+                    <li>> <strong>Resolution scripts</strong>: evidence-backed pathways expressed in plain language</li>
+                </ul>
+
+                <p class="stat-desc">
+                    Tacitus uses LLMs for language, but <strong>not for logic</strong>. The logic is governed by a stable ontology
+                    and deterministic reasoning, so that organizations can trust the structure beneath each recommendation.
+                </p>
+
+                <div class="terminal-log wide" style="margin-top: 1.5rem;">
+                    <p>> input: messy narrative</p>
+                    <p>> output: structured conflict_graph + zopa_pathways</p>
+                    <p>> key_property: deterministic_logic ∧ pluralist_ontology ∧ explainable_outputs</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. GRAPH DB VS SEMANTIC SEARCH -->
+        <section class="content-section">
+            <div class="section-label">02. GRAPH DATABASES ≠ SEMANTIC SEARCH</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>WHY WE MODEL CONFLICT AS A GRAPH</h3>
+                    <span class="status-tag warning">CRUCIAL DISTINCTION</span>
+                </div>
+
+                <p>
+                    Semantic search is powerful for <em>finding similar text</em>. Resolution requires more:
+                    you need to see where power flows, where trust breaks, who can bridge factions, and which paths
+                    avoid triggering vetoes. That is why Tacitus commits the ontology to a <strong>graph database</strong>
+                    and exposes it in the <strong>Ontology &amp; Conflict Graph</strong> view as an explorable map.
+                </p>
+
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div>
+                        <h4 class="hud-title">>> SEMANTIC SEARCH</h4>
+                        <p class="code-text">
+                            "Show me emails similar to: ‘We should delay the vote’."
+                        </p>
+                        <p class="stat-desc">
+                            Excellent for <em>finding text</em> but blind to structure. It knows which sentences
+                            are similar, not how influence and constraints interact. It can cluster themes,
+                            but it cannot tell you who can actually unlock a stalemate.
+                        </p>
+                        <ul class="terminal-list">
+                            <li>> Finds related messages</li>
+                            <li>> Clusters topics and tones</li>
+                            <li>> Misses leverage, vetoes, and structural risk</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="hud-title">>> GRAPH DATABASE</h4>
+                        <p class="code-text">
+                            "Show all paths from Actor A to Actor B that avoid crossing a hard veto and minimize reputational risk."
+                        </p>
+                        <p class="stat-desc">
+                            Graph DBs (Neo4j-style / property graphs) let Tacitus ask questions about relationships and power:
+                            centrality, bottlenecks, potential mediators, fragile alliances, vulnerable nodes.
+                        </p>
+                        <ul class="terminal-list">
+                            <li>> Model: (Actor)-[RELATION]->(Actor)</li>
+                            <li>> Structural queries: “Who can pressure X without escalating Y?”</li>
+                            <li>> Output: actual options, not just similar sentences</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 class="hud-title" style="margin-top: 2rem;">>> HOW THE ONTOLOGY POPULATES THE GRAPH</h4>
+                <p class="stat-desc">
+                    The Ontology Agent sends its outputs to a property graph where each element becomes a node or edge:
+                </p>
+
+                <div class="terminal-log wide">
+                    <p>(Actor)-[:SEEKS]->(Interest)</p>
+                    <p>(Actor)-[:CONSTRAINED_BY]->(Constraint)</p>
+                    <p>(Actor)-[:IN_RELATIONSHIP {type: "alliance" | "rivalry" | "dependency"}]->(Actor)</p>
+                    <p>(Interest)-[:COMPATIBLE_WITH]->(Interest)</p>
+                    <p>(Constraint)-[:LIMITS]->(Solution)</p>
+                </div>
+
+                <p class="stat-desc">
+                    This lets Tacitus combine <strong>semantic similarity</strong> (what emails sound alike) with
+                    <strong>structural reasoning</strong> (who matters, where risk sits, how to get from A to B without breaking the system).
+                    As new emails and documents arrive, the graph updates—turning the platform into a living conflict model
+                    rather than a one-off analysis.
+                </p>
+
+                <div class="terminal-log wide" style="margin-top: 1.5rem;">
+                    <p>> MATCH (a:Actor)-[r:CONFLICTS_WITH]->(b:Actor)</p>
+                    <p>> WHERE a.role = "CEO" AND b.cluster = "Board"</p>
+                    <p>> RETURN a, b, r, shortestPath( (a)-[*..4]-(b) ) AS mediation_routes</p>
+                    <p>> resolution_logic: semantic_similarity overlays the graph, but decisions run on <strong>structure</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. CASEBOOK HEADER -->
+        <section class="content-section">
+            <div class="section-label">03. TACITUS CASEBOOK // APPLIED CONFLICTS</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>FROM THEORY TO LIVE CASES</h3>
+                    <span class="status-tag ok">STRUCTURE OVER STORIES</span>
+                </div>
+                <p>
+                    The same ontology and graph logic applies to founder disputes, M&amp;A friction, urban planning,
+                    political coalitions, and diplomatic crises. Below are three stylized Case Files that show
+                    how Tacitus treats conflicts as structured systems, not anecdotal drama.
+                </p>
+            </div>
+        </section>
+
+        <!-- CASE FILE 01 -->
+        <section class="content-section">
+            <div class="section-label">CASE FILE: 01 // EQUITY &amp; CONTROL</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>FOUNDER DISPUTE: "THE PIVOT"</h3>
+                    <span class="status-tag critical">HIGH ENTROPY</span>
+                </div>
+
+                <p>
+                    A classic founder dispute: two truths in collision. One says, “I built the architecture.”
+                    The other says, “I saved the company.” Both are right. Both exclude the other. Tacitus models this
+                    not as a simple fight over percentages, but as a clash of <strong>authorship, risk, and recognition</strong>.
+                </p>
+                
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div class="analysis-col">
+                        <h4 class="hud-title">>> STAKEHOLDER NARRATIVES</h4>
+
+                        <div class="stakeholder-box">
+                            <div class="sh-header"><span class="dot-fact"></span> CEO (Technical)</div>
+                            <p class="sh-claim">"I built the core IP. The pivot was my architecture. I deserve 60%."</p>
+                            <div class="sh-meta">
+                                LATENT INTEREST: <strong>Recognition of authorship &amp; identity as “creator”</strong><br>
+                                CONSTRAINT: VC term sheet; risk of losing technical continuity.
+                            </div>
+                        </div>
+
+                        <div class="stakeholder-box">
+                            <div class="sh-header"><span class="dot-narrative"></span> COO (Commercial)</div>
+                            <p class="sh-claim">"The code is useless without the clients I brought. I saved the runway."</p>
+                            <div class="sh-meta">
+                                LATENT INTEREST: <strong>Validation of risk and foresight</strong><br>
+                                CONSTRAINT: Burnout; competing offers; fear of becoming “secondary”.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-col">
+                        <h4 class="hud-title">>> GRAPH READING &amp; COMMON GROUND</h4>
+
+                        <div class="venn-visual">
+                            <div class="circle c-left"></div>
+                            <div class="circle c-right"></div>
+                            <div class="overlap-text">
+                                <span class="highlight">ZOPA DETECTED</span>
+                            </div>
+                        </div>
+
+                        <div class="terminal-log" style="margin-top: 1rem;">
+                            <p>> analyzing_incentives()... <span class="ok">DONE</span></p>
+                            <p>> mutual_threat: "Down-round and talent loss if dispute persists into Q3"</p>
+                            <p>> shared_value: "Preserving the legacy of the original mission"</p>
+                            <p>> leverage_point: "Upcoming fundraise forces public narrative clarity"</p>
+                            <p>> STRUCTURAL VIEW: both depend on each other to avoid a governance crisis.</p>
+                            <p>> <strong>RECOMMENDATION:</strong> Reset vesting &amp; titles as co-authors of “Act II” of the company, framed explicitly in external narrative. Avoid retroactive punishment; anchor solution in shared future credit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASE FILE 02 -->
+        <section class="content-section">
+            <div class="section-label">CASE FILE: 02 // CULTURAL FRICTION</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>POST-MERGER: "SPEED VS SAFETY"</h3>
+                    <span class="status-tag warning">DIVERGENCE DETECTED</span>
+                </div>
+
+                <p>
+                    The conflict is framed as “reckless cowboys” vs “bureaucratic dinosaurs”.
+                    Tacitus reveals it as a mismatch of <strong>time horizons and risk grammars</strong>:
+                    a weekly clock colliding with a quarterly one.
+                </p>
+
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="stat-block">
+                        <span class="stat-label">Acquired Team Value</span>
+                        <span class="stat-val cyan">SPEED</span>
+                        <p class="stat-desc">
+                            "Compliance is bureaucracy."  
+                            Horizon: <strong>Week</strong> — shipping velocity, optionality, survival-by-momentum.
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Parent Corp Value</span>
+                        <span class="stat-val purple">STABILITY</span>
+                        <p class="stat-desc">
+                            "Process is protection."  
+                            Horizon: <strong>Quarter</strong> — risk management, regulators, brand, long-term capital.
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Friction Index</span>
+                        <span class="stat-val red">88%</span>
+                        <p class="stat-desc">
+                            Structural breakdown imminent if no shared frame emerges.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="terminal-log wide" style="margin-top: 1.5rem;">
+                    <p>> SYNTHESIS: Conflict ≠ “laziness” (corp view) nor “stupidity” (startup view).</p>
+                    <p>> ROOT_CAUSE: Incompatible temporal horizons and incompatible definitions of “responsibility”.</p>
+                    <p>> GRAPH_LOGIC: Critical decisions bottleneck through one director with veto on both sides &mdash; a structural choke point.</p>
+                    <p>> BRIDGE: Create a "Sandboxed Compliance" zone.</p>
+                    <p>> IMPLEMENTATION: Startup moves fast inside a bounded risk envelope; Director is recast as a “Boundary Guardian” rather than “Blocker”; Corp gets documented guardrails; Startup retains its identity as a high-velocity unit.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASE FILE 03 -->
+        <section class="content-section">
+            <div class="section-label">CASE FILE: 03 // PUBLIC SECTOR</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>URBAN PLANNING: "THE NEW TOWER"</h3>
+                    <span class="status-tag ok">RESOLVED</span>
+                </div>
+
+                <p>
+                    Urban disputes are rarely just about zoning or shadows. They are about whether a community sees itself
+                    reflected in the future being built around it. Tacitus models this as an asymmetry between
+                    <strong>formal power</strong> and <strong>narrative centrality</strong>.
+                </p>
+
+                <div class="analysis-map">
+                    <div class="cluster c1">
+                        <span class="cluster-label">Developers</span>
+                        <span class="cluster-keyword">Growth</span>
+                        <span class="cluster-keyword">Housing</span>
+                    </div>
+                    <div class="cluster c2">
+                        <span class="cluster-label">Residents</span>
+                        <span class="cluster-keyword">Heritage</span>
+                        <span class="cluster-keyword">Shadows</span>
+                    </div>
+                    <div class="bridge-line"></div>
+                    <div class="bridge-label">SHARED INTEREST: "NEIGHBORHOOD VITALITY"</div>
+                </div>
+
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div>
+                        <h4 class="hud-title">>> SURFACE TEXT</h4>
+                        <p class="code-text">"The traffic will be a nightmare. The shadow will kill the park."</p>
+                    </div>
+                    <div>
+                        <h4 class="hud-title">>> DECODED FEAR</h4>
+                        <p class="code-text highlight">"We are being erased. Our history doesn't matter to the city."</p>
+                    </div>
+                </div>
+
+                <div class="terminal-log wide" style="margin-top: 1.5rem;">
+                    <p>> Tacitus maps Residents as a cluster with high narrative centrality but low formal power.</p>
+                    <p>> Developers + City Hall hold formal power but face legitimacy risk if residents disengage or mobilize opposition.</p>
+                    <p>> RESOLUTION_LOGIC: binding design covenant (height cap, park investment) + explicit narrative recognition (“this project completes the story of the old neighborhood, it does not overwrite it”).</p>
+                    <p>> RESULT: Shared vocabulary of "neighborhood vitality" replaces abstract fight over "density vs heritage".</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06. COMMON GROUND & POLARIZATION -->
+        <section class="content-section">
+            <div class="section-label">06. COMMON GROUND &amp; POLARIZATION</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>FROM POLARIZATION TO DELIBERATION</h3>
+                    <span class="status-tag ok">CONCORDIA DISCORS</span>
+                </div>
+
+                <p>
+                    Tacitus is built on a simple, hard truth: <strong>competing values are not a bug</strong> of politics or organizations,
+                    they are the starting point. The goal is not to erase disagreement, but to make it legible and governable.
+                </p>
+
+                <div class="grid-3" style="margin-top: 1.5rem;">
+                    <div class="stat-block">
+                        <span class="stat-label">Logic of Common Ground</span>
+                        <span class="stat-val cyan">INTERSECTIONS</span>
+                        <p class="stat-desc">
+                            We search not for “agreement on everything”, but for narrow, actionable overlaps:
+                            a clause both sides can live with, a sequence of steps both can defend in public.
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Logic of Deliberation</span>
+                        <span class="stat-val purple">ITERATION</span>
+                        <p class="stat-desc">
+                            Deliberation is modeled as an iterative update to the conflict graph:
+                            each round removes some edges (misperceptions) and adds others (new guarantees, new channels of trust).
+                        </p>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">Polarization</span>
+                        <span class="stat-val red">FRAGMENTATION</span>
+                        <p class="stat-desc">
+                            Polarization shows up as disconnected subgraphs: clusters that no longer share channels of trust.
+                            Tacitus highlights potential “bridge nodes” that can still speak to both.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="terminal-log wide" style="margin-top: 1.5rem;">
+                    <p>> step_1: reveal_structure(conflict_graph)</p>
+                    <p>> step_2: identify_bridge_nodes(actors, trust_edges)</p>
+                    <p>> step_3: simulate_deliberation_rounds() → project_plausible_paths()</p>
+                    <p>> step_4: recommend_actions() aligned_with(mandate, risk_tolerance, ethics)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07. CONCORDIA DISCORS MAGAZINE / PHILOSOPHY -->
+        <section class="content-section">
+            <div class="section-label">07. PHILOSOPHICAL BACKBONE</div>
+            <div class="glass-card wide analysis-card">
+                <div class="analysis-header">
+                    <h3>CONCORDIA DISCORS &amp; THE TACITUS PHILOSOPHY</h3>
+                    <span class="status-tag ok">PLURALISM ENGINE</span>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <h4 class="hud-title">>> WHAT IS CONCORDIA DISCORS?</h4>
+                        <p class="stat-desc">
+                            <a href="https://concordiadiscors.org" target="_blank" class="accent">Concordia Discors</a> 
+                            is the editorial sister to Tacitus: a magazine of essays on liberty, conscience,
+                            pluralism, and polarization. It treats disagreement not as pathology but as
+                            the normal condition of a free society.
+                        </p>
+                        <p class="stat-desc">
+                            The phrase <em>concordia discors</em> means “discordant harmony”: the idea that political and moral life
+                            are made of conflicting goods that must be balanced rather than eliminated. Drawing on thinkers like
+                            Raymond Aron, Isaiah Berlin, Tocqueville, Simone Weil, and others, the magazine explores how
+                            societies can live with deep difference without collapsing.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="hud-title">>> WHY IT MATTERS FOR AI &amp; RESOLUTION</h4>
+                        <p class="stat-desc">
+                            Tacitus does not try to compute a single “correct” value system.
+                            Our ontology is explicitly pluralist: different actors can legitimately care
+                            about different goods (security, fairness, identity, mercy, order, autonomy).
+                        </p>
+                        <p class="stat-desc">
+                            In the Tacitus worldview:
+                        </p>
+                        <ul class="terminal-list">
+                            <li>> Competing values are normal</li>
+                            <li>> Conflict is information</li>
+                            <li>> Common ground is discovered, not imposed</li>
+                            <li>> Pluralism is a data structure, not a slogan</li>
+                        </ul>
+                        <p class="stat-desc">
+                            This is why the Tacitus graph is built to handle <strong>competing values</strong> instead of flattening
+                            everything into “for” or “against”. The same intellectual stack that powers Concordia Discors
+                            essays about polarization also powers the Tacitus Engine for live conflicts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+        </section>
+
+        <!-- CTA -->
+        <section class="content-section" style="text-align: center;">
+            <h2 class="section-heading">>> Run This Analysis on Your Data</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 1rem auto 2rem;">
+                Tacitus connects to your real communication graph (email, memos, minutes) in read-only mode.
+                We build an initial conflict ontology and graph in days – and refine it with you over time.
+            </p>
+            <a href="mailto:deploy@tacitus.me" class="btn-accent">Start Pilot</a>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+    <!-- Only needed if you wired the deliberation.js module & D3 as drafted -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="deliberation.js"></script>
+</body>
+</html>
+
