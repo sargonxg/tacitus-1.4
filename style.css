@@ -735,15 +735,16 @@ header,
 .v-number,
 .page-version {
     color: #ffffff !important;
+
+}
+/* Increase space below the fixed top nav */
+nav.glass-panel {
+    margin-bottom: 60px !important;
 }
 
-/* Increase vertical space below the top navigation */
+/* Increase top padding of hero so content moves lower */
 .hero {
-    padding-top: 80px;  /* adjust to 60 / 80 / 100px depending on how much you want */
+    padding-top: 160px !important; /* adjust to 140 / 160 / 180px */
 }
 
-/* Make the version badge white */
-.hero .badge {
-    color: #ffffff !important;
-}
 
