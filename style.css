@@ -712,3 +712,27 @@ footer {
 }
 
 .stat-block .stat-desc { font-size: 0.75rem; line-height: 1.6; color: var(--text-muted); }
+
+
+/* --- SPACING FIX BELOW TOP NAV --- */
+.navbar, 
+header, 
+.top-menu, 
+#main-nav {
+    margin-bottom: 50px !important;
+}
+
+.version-banner,
+.version-tag,
+.top-banner,
+.page-version {
+    margin-top: 40px !important;
+}
+
+/* --- MAKE THE VERSION TAG WHITE --- */
+.version-banner,
+.version-tag,
+.v-number,
+.page-version {
+    color: #ffffff !important;
+}
