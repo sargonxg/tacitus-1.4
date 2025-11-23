@@ -232,22 +232,36 @@ nav.glass-panel {
     grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr);
 }
 
-/* VERSION BADGE UNDER NAV */
+/* VERSION BADGE UNDER NAV — FULL WHITE OVERRIDE */
 .badge {
     font-family: var(--font-mono);
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.22em;
-    color: #ffffff; /* <-- make the v0.6 text white */
-    border: 1px solid rgba(188, 19, 254, 0.66);
+
+    /* MAKE TEXT WHITE */
+    color: #ffffff !important;
+
+    /* REMOVE PURPLE BORDER — MAKE IT WHITE */
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+
     border-radius: 999px;
     padding: 4px 14px;
     display: inline-block;
+
     margin-bottom: 1.75rem;
-    margin-top: 0.75rem; /* small extra offset from top of hero */
-    background: radial-gradient(circle at top left, rgba(188, 19, 254, 0.15), transparent);
-    animation: badgePulse 4s ease-in-out infinite;
+    margin-top: 0.75rem;
+
+    /* REMOVE PURPLE BACKGROUND GLOW */
+    background: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: none !important;
+
+    /* Optional: subtle white glow */
+    /* text-shadow: 0 0 8px rgba(255,255,255,0.4); */
+
+    animation: none; /* disable purple pulse */
 }
+
 
 @keyframes badgePulse {
     0% {
